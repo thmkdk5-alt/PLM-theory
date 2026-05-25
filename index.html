@@ -1,11 +1,902 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>My First Site</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PLM導入が目的ではない。製造業に必要なのは「企業進化基盤」である</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:      #f2f4f7;
+    --bg2:     #ffffff;
+    --bg3:     #e8ecf1;
+    --bg4:     #f7f8fa;
+    --border:  rgba(0,0,0,0.08);
+    --border2: rgba(0,0,0,0.14);
+    --text:    #1e2229;
+    --text2:   #4a5060;
+    --text3:   #7c8494;
+    --accent:  #1e56c8;
+    --gold:    #9a4e00;
+    --teal:    #0a6b52;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 400;
+    line-height: 1.9;
+    font-size: 15px;
+  }
+
+  /* ─── Header ─── */
+  header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 72px 24px 60px;
+    text-align: center;
+  }
+  .header-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(30,86,200,0.3);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+  header h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(20px, 3.5vw, 32px);
+    font-weight: 700;
+    line-height: 1.55;
+    max-width: 760px;
+    margin: 0 auto 20px;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+  .header-sub { font-size: 13px; color: var(--text3); }
+  .header-sub span { margin: 0 8px; opacity: 0.5; }
+
+  /* ─── Layout ─── */
+  .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+  /* ─── TOC ─── */
+  .toc-wrap {
+    margin: 52px 0;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 32px;
+  }
+  .toc-title {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text3);
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+  .toc ol { list-style: none; padding: 0; counter-reset: toc; }
+  .toc ol li {
+    counter-increment: toc;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text2);
+  }
+  .toc ol li:last-child { border-bottom: none; }
+  .toc ol li::before {
+    content: counter(toc, decimal-leading-zero);
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 500;
+    min-width: 22px;
+  }
+  .toc ol li a { color: inherit; text-decoration: none; }
+  .toc ol li a:hover { color: var(--accent); }
+
+  /* ─── Section ─── */
+  article { padding: 0 0 80px; }
+  .section { margin-bottom: 64px; }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  h2 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(18px, 2.8vw, 24px);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.55;
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 32px 0 12px;
+    padding-left: 12px;
+    border-left: 3px solid var(--accent);
+    line-height: 1.6;
+  }
+
+  h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text2);
+    margin: 24px 0 10px;
+  }
+
+  p { margin-bottom: 16px; color: var(--text); line-height: 1.9; }
+
+  /* ─── Pull quote ─── */
+  .pull-quote {
+    margin: 28px 0;
+    padding: 22px 28px;
+    background: var(--bg3);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.75;
+  }
+  .pull-quote.gold { border-left-color: var(--gold); }
+  .pull-quote.teal { border-left-color: var(--teal); }
+
+  /* ─── Tag list ─── */
+  .tag-list { display: flex; flex-wrap: wrap; gap: 7px; margin: 16px 0 20px; }
+  .tag {
+    font-size: 13px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    color: var(--text2);
+  }
+
+  /* ─── Versus card ─── */
+  .versus {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    margin: 28px 0;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--border);
+  }
+  .versus-card { background: var(--bg2); padding: 24px 22px; }
+  .versus-card .label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .versus-card.erp .label { color: var(--text3); }
+  .versus-card.plm .label { color: var(--accent); }
+  .versus-card .vtitle { font-family: 'Noto Serif JP', serif; font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .versus-card .vdesc { font-size: 13px; color: var(--text2); line-height: 1.7; }
+
+  /* ─── Two col ─── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  @media (max-width: 560px) { .two-col, .versus { grid-template-columns: 1fr; } }
+
+  .col-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 20px 18px; }
+  .col-card h4 {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin: 0 0 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text2);
+  }
+  .col-card.defense h4 { color: var(--text3); }
+  .col-card.offense h4 { color: var(--gold); }
+  .col-card ul { list-style: none; padding: 0; }
+  .col-card ul li {
+    font-size: 13px;
+    color: var(--text2);
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+  }
+  .col-card ul li:last-child { border-bottom: none; }
+  .col-card ul li::before { content: '—'; color: var(--border2); flex-shrink: 0; }
+
+  /* ─── Plain list ─── */
+  .plain-list { list-style: none; padding: 0; margin: 12px 0 20px; }
+  .plain-list li {
+    font-size: 14px;
+    color: var(--text2);
+    padding: 5px 0 5px 16px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.7;
+  }
+  .plain-list li:last-child { border-bottom: none; }
+  .plain-list li::before { content: '·'; position: absolute; left: 4px; color: var(--accent); font-size: 16px; line-height: 1.5; }
+
+  /* ─── Flow ─── */
+  .flow-loop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin: 24px auto;
+    max-width: 360px;
+  }
+  .flow-node {
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 13px;
+    color: var(--text2);
+    text-align: center;
+  }
+  .flow-node.accent { border-color: var(--accent); color: var(--accent); font-weight: 500; }
+  .flow-node.teal   { border-color: var(--teal);   color: var(--teal);   font-weight: 500; }
+  .flow-arrow-down { font-size: 18px; color: var(--text3); line-height: 1.4; padding: 2px 0; }
+
+  /* ─── Department section ─── */
+  .dept-section {
+    margin: 20px 0;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .dept-header {
+    background: var(--bg4);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .dept-body { padding: 16px 20px; }
+  .dept-body ul { list-style: none; padding: 0; }
+  .dept-body ul li {
+    font-size: 13px;
+    color: var(--text2);
+    padding: 5px 0 5px 16px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    line-height: 1.65;
+  }
+  .dept-body ul li:last-child { border-bottom: none; }
+  .dept-body ul li::before { content: '✓'; position: absolute; left: 2px; color: var(--teal); font-size: 12px; }
+
+  /* ─── ROI boxes ─── */
+  .roi-block {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin: 16px 0;
+  }
+  .roi-block-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .roi-block.defense .roi-block-title { color: var(--text3); }
+  .roi-block.offense .roi-block-title { color: var(--gold); }
+  .roi-block.exec    .roi-block-title { color: var(--accent); }
+  .roi-block ul { list-style: none; padding: 0; }
+  .roi-block ul li {
+    font-size: 13px;
+    color: var(--text2);
+    padding: 4px 0 4px 16px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .roi-block ul li:last-child { border-bottom: none; }
+  .roi-block.defense ul li::before { content: '—'; position: absolute; left: 2px; color: var(--text3); }
+  .roi-block.offense ul li::before { content: '↑'; position: absolute; left: 2px; color: var(--gold); font-size: 12px; }
+  .roi-block.exec    ul li::before { content: '◆'; position: absolute; left: 2px; color: var(--accent); font-size: 9px; top: 8px; }
+
+  /* ─── Warning box ─── */
+  .warn-box {
+    background: #fff8f0;
+    border: 1px solid rgba(154,78,0,0.2);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 20px 24px;
+    margin: 24px 0;
+  }
+  .warn-box p { color: var(--text); margin-bottom: 8px; font-size: 14px; }
+  .warn-box p:last-child { margin-bottom: 0; }
+
+  /* ─── Summary ─── */
+  .summary-box {
+    margin: 56px 0 0;
+    padding: 40px 36px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 14px;
+    text-align: center;
+  }
+  .summary-box h2 { margin-bottom: 18px; }
+  .summary-box p { max-width: 540px; margin: 0 auto 12px; font-size: 15px; color: var(--text2); }
+  .final-phrase {
+    margin-top: 24px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.7;
+  }
+
+  hr { border: none; border-top: 1px solid var(--border); margin: 52px 0; }
+
+  footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: 12px; color: var(--text3); }
+</style>
 </head>
 <body>
-  <h1>Hello GitHub Pages!</h1>
-  <p>初めてのWeb公開です。</p>
+
+<header>
+  <p class="header-eyebrow">Manufacturing × PLM</p>
+  <h1>PLM導入が目的ではない。<br>製造業に必要なのは「企業進化基盤」である</h1>
+  <p class="header-sub">持論・考察 <span>|</span> PLM / Manufacturing / DX</p>
+</header>
+
+<div class="container">
+
+  <div class="toc-wrap">
+    <p class="toc-title">目次</p>
+    <nav class="toc">
+      <ol>
+        <li><a href="#s01">はじめに</a></li>
+        <li><a href="#s02">なぜ今、PLMを考えるべきなのか</a></li>
+        <li><a href="#s03">PLMを「図面管理」で語る限界</a></li>
+        <li><a href="#s04">製造業は「学習する競争」へ変わる</a></li>
+        <li><a href="#s05">PLMの本質とは何か</a></li>
+        <li><a href="#s06">FlowからLoopへ</a></li>
+        <li><a href="#s07">AI時代にPLMが重要になる理由</a></li>
+        <li><a href="#s08">PLMは「整備」と「活用」で考える</a></li>
+        <li><a href="#s09">PLMが解決する部門別課題</a></li>
+        <li><a href="#s10">PLMは課題解決か、事業変革か</a></li>
+        <li><a href="#s11">経営層にはどう説明すべきか</a></li>
+        <li><a href="#s12">まとめ</a></li>
+      </ol>
+    </nav>
+  </div>
+
+  <article>
+
+    <!-- 01 はじめに -->
+    <div class="section" id="s01">
+      <p class="section-label">01</p>
+      <h2>はじめに</h2>
+      <p>PLM（Product Lifecycle Management）という言葉を聞くと、多くの人は以下を思い浮かべるのではないでしょうか。</p>
+      <div class="tag-list">
+        <span class="tag">図面管理</span>
+        <span class="tag">BOM管理</span>
+        <span class="tag">PDM</span>
+        <span class="tag">CAD連携</span>
+        <span class="tag">設計情報共有</span>
+      </div>
+      <p>もちろん、それらはPLMの重要な機能です。しかし、いま製造業で起きている変化を考えると、PLMを単なる「設計情報管理システム」として捉えるだけでは、本質価値を見失ってしまいます。</p>
+      <p>いま製造業に求められているのは、「いかに正しく作るか」だけではありません。</p>
+      <div class="pull-quote">
+        本当に問われているのは、<br>「いかに速く学習し、適応し、進化し続けられるか」です。
+      </div>
+      <p>そしてPLMは、そのための基盤へ変わろうとしています。本記事では、PLMを単なるシステムとしてではなく、<strong>「変化を競争力へ変えるための企業進化基盤」</strong>という視点で整理してみたいと思います。</p>
+    </div>
+
+    <hr>
+
+    <!-- 02 なぜ今 -->
+    <div class="section" id="s02">
+      <p class="section-label">02</p>
+      <h2>なぜ今、PLMを考えるべきなのか</h2>
+      <p>いま製造業を取り巻く環境は、かつてないほど大きく変化しています。</p>
+      <div class="tag-list">
+        <span class="tag">EV化</span>
+        <span class="tag">SDV（Software Defined Vehicle）化</span>
+        <span class="tag">ソフトウェア化</span>
+        <span class="tag">サービス化</span>
+        <span class="tag">グローバル化</span>
+        <span class="tag">サプライチェーン不安定化</span>
+        <span class="tag">地政学リスク</span>
+        <span class="tag">品質責任強化</span>
+        <span class="tag">法規制強化</span>
+        <span class="tag">原価変動</span>
+        <span class="tag">人材不足</span>
+        <span class="tag">技術継承危機</span>
+        <span class="tag">AIの急速な進化</span>
+      </div>
+      <p>こうした変化によって、製品・工程・品質・調達・生産・サービスを取り巻く「変化量」が急増しています。</p>
+      <p>過去は、多少情報が分散していても、現場力やベテランの経験、部門間のすり合わせで吸収できました。Excel、メール、会議、口頭確認でも、何とか整合を取りながら業務を回すことができていました。つまり、これまでは<strong>「人で吸収できた時代」</strong>だったと言えます。</p>
+      <p>しかし今は違います。変化の量と速度が、人の頑張りだけでは吸収できないレベルに達しています。設計変更、工程変更、法規変更、材料変更、原価変更、サプライヤー変更、生産地変更——それらが部門や拠点をまたいで、複雑に影響し合うようになっています。</p>
+      <div class="pull-quote gold">
+        「変化対応力」そのものが競争力になり始めている。
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- 03 図面管理の限界 -->
+    <div class="section" id="s03">
+      <p class="section-label">03</p>
+      <h2>PLMを「図面管理」で語る限界</h2>
+      <p>従来、PLMは以下のように語られることが多くありました。</p>
+      <div class="tag-list">
+        <span class="tag">図面管理</span>
+        <span class="tag">BOM管理</span>
+        <span class="tag">設計情報共有</span>
+        <span class="tag">データ一元化</span>
+      </div>
+      <p>もちろん、それらは重要です。しかしそれだけでPLMを語ると、どうしても<strong>「高価な管理システム」</strong>に見えてしまいます。</p>
+      <p>本来、PLMの価値はそこではありません。PLMの本質は、<strong>「製品を中心に、企業全体の意思決定をつなぐこと」</strong>にあります。つまりPLMは、単なる情報管理ツールではなく、<strong>「企業全体を学習・進化させるための基盤」</strong>なのです。</p>
+      <div class="versus">
+        <div class="versus-card erp">
+          <p class="label">ERP</p>
+          <p class="vtitle">今を回す基盤</p>
+          <p class="vdesc">金・在庫・実績・会計を扱い、<br>現在の業務オペレーションを支える。</p>
+        </div>
+        <div class="versus-card plm">
+          <p class="label">PLM</p>
+          <p class="vtitle">未来を作る基盤</p>
+          <p class="vdesc">製品・技術・変更・ナレッジ・将来仕様を扱い、<br>企業の進化を支える。</p>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- 04 学習する競争 -->
+    <div class="section" id="s04">
+      <p class="section-label">04</p>
+      <h2>製造業は「学習する競争」へ変わる</h2>
+      <p>かつての製造業は、<strong>「良いものを、効率良く作る競争」</strong>でした。もちろん、品質・コスト・納期は今後も重要です。しかし今後は、それだけでは足りません。これから重要になるのは、<strong>「どれだけ速く学習し、適応し、進化できるか」</strong>です。競争軸が変わり始めています。</p>
+      <div class="two-col">
+        <div class="col-card defense">
+          <h4>昔の競争力</h4>
+          <ul>
+            <li>生産能力</li>
+            <li>品質</li>
+            <li>コスト</li>
+            <li>製品性能</li>
+            <li>現場力</li>
+          </ul>
+        </div>
+        <div class="col-card offense">
+          <h4>これからの競争力</h4>
+          <ul>
+            <li>学習速度</li>
+            <li>変化対応力</li>
+            <li>意思決定速度</li>
+            <li>再利用力</li>
+            <li>先回りする力</li>
+            <li>知識を企業資産として蓄積する力</li>
+          </ul>
+        </div>
+      </div>
+      <div class="pull-quote teal">
+        重要なのは「完成品」だけではない。<br>
+        "企業がどれだけ学習できるか"——そして、その学習を次の製品・工程・意思決定へ活かせるか。<br>
+        そこが、これからの製造業の競争力になる。
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- 05 PLMの本質 -->
+    <div class="section" id="s05">
+      <p class="section-label">05</p>
+      <h2>PLMの本質とは何か</h2>
+
+      <h3>現在の問題の本質は「企業として学習できていないこと」</h3>
+      <p>現場では、さまざまな問題が起きています。</p>
+      <ul class="plain-list">
+        <li>情報が分散している</li>
+        <li>Excelに依存している</li>
+        <li>メールでやり取りしている</li>
+        <li>図面やBOMが部門ごとに違う</li>
+        <li>進捗が見えない</li>
+        <li>設計変更の影響が追えない</li>
+        <li>過去知見が探せない</li>
+        <li>判断理由が残っていない</li>
+        <li>部門間で認識がずれる</li>
+        <li>現場実態が設計へ戻らない</li>
+        <li>シミュレーションや検討過程が次に使えない</li>
+      </ul>
+      <p>これらは確かに大きな課題です。しかし、本質は「Excelが多いこと」や「情報が散らばっていること」そのものではありません。本当に深刻なのは、<strong>「企業として学習できていないこと」</strong>です。</p>
+      <p>情報が残らない。知識が再利用されない。判断理由が資産化されない。現場の実態が次の設計に活かされない。検討過程や失敗経験が次の意思決定に使われない。これでは、企業として経験を積み上げることができません。</p>
+      <p>そして、この状態を放置すると、以下へ繋がっていきます。</p>
+      <div class="tag-list">
+        <span class="tag">品質問題</span>
+        <span class="tag">開発遅延</span>
+        <span class="tag">生産準備遅延</span>
+        <span class="tag">手戻り増加</span>
+        <span class="tag">原価悪化</span>
+        <span class="tag">利益率低下</span>
+        <span class="tag">技術継承断絶</span>
+        <span class="tag">AI活用不能</span>
+        <span class="tag">顧客対応力低下</span>
+      </div>
+      <p>経営上、本当に怖いのは<strong>「気づいた時には競争力を失っていること」</strong>です。問題は「管理不足」ではありません。本質は<strong>「進化速度で負けること」</strong>なのです。</p>
+
+      <h3>PLMの本質① 製品中心経営</h3>
+      <p>PLMの本質の一つ目は、<strong>「製品を中心に企業を再統合すること」</strong>です。製造業は本来、技術・品質・原価・生産・調達・サービス・営業・現場が、すべて「製品」を中心につながっています。しかし現実には、部門・システム・拠点・業務ごとに分断されています。</p>
+      <p>設計は設計。生産技術は生産技術。品質は品質。調達は調達。生産管理は生産管理。営業は営業。それぞれが部分最適で動いている。その結果、企業全体としての整合性が崩れやすくなります。</p>
+      <p>PLMの本質は、単に製品情報を管理することではありません。<strong>「製品を中心に企業を再統合すること」</strong>——つまりPLMとは、<strong>「製品中心経営基盤」</strong>なのです。</p>
+
+      <h3>PLMの本質② 「変更を制御する力」</h3>
+      <p>製造業の本質は、<strong>「変更との戦い」</strong>です。日々、以下のような変更が発生しています。</p>
+      <div class="tag-list">
+        <span class="tag">設計変更</span>
+        <span class="tag">工程変更</span>
+        <span class="tag">材料変更</span>
+        <span class="tag">法規変更</span>
+        <span class="tag">原価変更</span>
+        <span class="tag">サプライヤー変更</span>
+        <span class="tag">生産地変更</span>
+        <span class="tag">顧客要求変更</span>
+      </div>
+      <p>問題は、変更そのものではありません。本当に怖いのは<strong>「変更がどこへ影響するか見えないこと」</strong>です。設計変更が工程へ影響する。工程変更が品質へ影響する。材料変更が原価へ影響する。サプライヤー変更が納期へ影響する。この影響関係が見えないことで、手戻り・品質問題・開発遅延・生産準備遅延・原価悪化が発生します。</p>
+      <p>PLMの真価は<strong>「変更影響を制御すること」</strong>にあります。つまりPLMは、<strong>「変化を前提に回る企業」</strong>を作る基盤なのです。</p>
+
+      <h3>PLMの本質③ 技術意思決定の資産化</h3>
+      <p>従来、重要視されていたのは、図面・BOM・工程表などの完成成果物でした。しかし、これから本当に重要になるのは、<strong>「なぜそう判断したのか」</strong>です。</p>
+      <ul class="plain-list">
+        <li>なぜその構造を採用したのか</li>
+        <li>なぜその案を捨てたのか</li>
+        <li>なぜその材料を選んだのか</li>
+        <li>なぜその工程にしたのか</li>
+        <li>なぜその変更をしたのか</li>
+        <li>過去に何が失敗だったのか</li>
+      </ul>
+      <p>こうした<strong>「技術意思決定の文脈」</strong>こそが、企業の本当の資産になります。しかし現実には、それらはベテランの頭の中・Excel・メール・PowerPoint・会話に埋もれてしまっています。</p>
+      <div class="pull-quote">
+        PLMの本質は「技術資産を企業資産へ変えること」にある。
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- 06 Flow to Loop -->
+    <div class="section" id="s06">
+      <p class="section-label">06</p>
+      <h2>FlowからLoopへ</h2>
+      <p>従来のものづくりは、<strong>設計 → 生産 → 市場</strong>という一方向の流れ——「Flow」でした。しかし今後は、それだけでは足りません。これからのものづくりは以下の循環になります。つまり「Loop」です。</p>
+
+      <div class="flow-loop">
+        <div class="flow-node">市場・現場・利用実態</div>
+        <div class="flow-arrow-down">↓</div>
+        <div class="flow-node">フィードバック</div>
+        <div class="flow-arrow-down">↓</div>
+        <div class="flow-node">分析・学習</div>
+        <div class="flow-arrow-down">↓</div>
+        <div class="flow-node">シミュレーション</div>
+        <div class="flow-arrow-down">↓</div>
+        <div class="flow-node">意思決定</div>
+        <div class="flow-arrow-down">↓</div>
+        <div class="flow-node accent">設計最適化</div>
+        <div class="flow-arrow-down">↓</div>
+        <div class="flow-node accent">生産最適化</div>
+        <div class="flow-arrow-down">↓</div>
+        <div class="flow-node teal">再利用 → 再学習 ↻</div>
+      </div>
+
+      <p>重要なのは「情報を流すこと」ではなく、<strong>「知識を循環させること」</strong>なのです。PLMは今後、<strong>「知識循環基盤」</strong>へ進化していきます。</p>
+    </div>
+
+    <hr>
+
+    <!-- 07 AI -->
+    <div class="section" id="s07">
+      <p class="section-label">07</p>
+      <h2>AI時代にPLMが重要になる理由</h2>
+      <p>AIは、単にデータがあれば賢くなるわけではありません。AIに必要なのは、<strong>「文脈」</strong>です。つまり、以下のような情報です。</p>
+      <div class="tag-list">
+        <span class="tag">判断理由</span>
+        <span class="tag">制約条件</span>
+        <span class="tag">比較案</span>
+        <span class="tag">捨て案</span>
+        <span class="tag">過去失敗</span>
+        <span class="tag">現場実態</span>
+        <span class="tag">品質実績</span>
+        <span class="tag">シミュレーション結果</span>
+      </div>
+      <p>つまり、<strong>「人がどう考えたか」</strong>が必要なのです。完成した図面だけでは、AIは十分に学習できません。だからこそ、PLMは今後<strong>「AI活用の前提基盤」</strong>になります。</p>
+      <div class="pull-quote gold">
+        PLMがなければ、AIはただの計算機でしかない。
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- 08 整備と活用 -->
+    <div class="section" id="s08">
+      <p class="section-label">08</p>
+      <h2>PLMは「整備」と「活用」で考える</h2>
+      <p>PLMは「整備」と「活用」で分けて考えると分かりやすくなります。</p>
+
+      <h3>整備：守りのPLM</h3>
+      <p>整備とは、<strong>「情報がバラバラで回らない状態をなくすこと」</strong>です。具体的には以下です。</p>
+      <div class="tag-list">
+        <span class="tag">情報一元化</span>
+        <span class="tag">標準化</span>
+        <span class="tag">BOM整合</span>
+        <span class="tag">図面管理</span>
+        <span class="tag">変更管理</span>
+        <span class="tag">トレーサビリティ</span>
+        <span class="tag">業務プロセス整備</span>
+        <span class="tag">データ品質向上</span>
+      </div>
+
+      <h3>活用：攻めのPLM</h3>
+      <p>活用とは、<strong>「整備した情報・知識・経験を使い、事業競争力を高めること」</strong>です。具体的には以下です。</p>
+      <div class="tag-list">
+        <span class="tag">流用設計</span>
+        <span class="tag">類似検索</span>
+        <span class="tag">バリエーション戦略</span>
+        <span class="tag">モジュール化</span>
+        <span class="tag">原価最適化</span>
+        <span class="tag">工程最適化</span>
+        <span class="tag">生産シミュレーション</span>
+        <span class="tag">デジタルツイン</span>
+        <span class="tag">AI活用</span>
+        <span class="tag">現場フィードバック活用</span>
+        <span class="tag">品質実績活用</span>
+        <span class="tag">将来予測</span>
+      </div>
+      <div class="pull-quote">
+        重要なのは、「整備したものを、いかに活用し、再利用し、循環させるか」なのです。
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- 09 部門別課題 -->
+    <div class="section" id="s09">
+      <p class="section-label">09</p>
+      <h2>PLMが解決する部門別課題</h2>
+      <p>PLMは設計部門だけのものではありません。製品を中心に企業全体をつなぐ基盤である以上、広範な部門に影響します。</p>
+
+      <div class="dept-section">
+        <div class="dept-header">設計部門</div>
+        <div class="dept-body">
+          <ul>
+            <li>流用設計強化</li>
+            <li>変更影響把握</li>
+            <li>バリエーション管理</li>
+            <li>設計根拠の可視化</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dept-section">
+        <div class="dept-header">生産技術部門</div>
+        <div class="dept-body">
+          <ul>
+            <li>EBOM/MBOM/BOP連携</li>
+            <li>設計と工程の同期</li>
+            <li>工程影響分析</li>
+            <li>生産準備可視化</li>
+            <li>フロントローディング</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dept-section">
+        <div class="dept-header">生産管理部門</div>
+        <div class="dept-body">
+          <ul>
+            <li>計画精度向上</li>
+            <li>変更影響の早期把握</li>
+            <li>在庫・手配最適化</li>
+            <li>負荷計画可視化</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dept-section">
+        <div class="dept-header">品質保証部門</div>
+        <div class="dept-body">
+          <ul>
+            <li>トレーサビリティ強化</li>
+            <li>原因追跡高速化</li>
+            <li>影響範囲特定</li>
+            <li>再発防止</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dept-section">
+        <div class="dept-header">調達部門</div>
+        <div class="dept-body">
+          <ul>
+            <li>部品標準化</li>
+            <li>共通化推進</li>
+            <li>変更影響把握</li>
+            <li>調達リスク把握</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dept-section">
+        <div class="dept-header">営業・原価企画部門</div>
+        <div class="dept-body">
+          <ul>
+            <li>過去案件活用</li>
+            <li>見積精度向上</li>
+            <li>原価影響把握</li>
+            <li>顧客対応力向上</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pull-quote teal">
+        つまりPLMは、「製品を中心に企業全体をつなぐ基盤」なのです。
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- 10 課題解決か事業変革か -->
+    <div class="section" id="s10">
+      <p class="section-label">10</p>
+      <h2>PLMは課題解決か、事業変革か</h2>
+      <p>結論は、<strong>「短期的には課題解決。中長期では事業変革。」</strong>です。</p>
+      <p>導入初期は、以下のような課題解決から始まります。</p>
+      <div class="tag-list">
+        <span class="tag">情報分散解消</span>
+        <span class="tag">設計変更管理</span>
+        <span class="tag">BOM統合</span>
+        <span class="tag">進捗可視化</span>
+        <span class="tag">Excel削減</span>
+      </div>
+      <p>しかし、その先には以下があります。</p>
+      <div class="tag-list">
+        <span class="tag">モジュール化</span>
+        <span class="tag">バリエーション戦略</span>
+        <span class="tag">グローバル開発</span>
+        <span class="tag">開発高速化</span>
+        <span class="tag">デジタルツイン</span>
+        <span class="tag">AI活用</span>
+        <span class="tag">サプライチェーン統合</span>
+        <span class="tag">生産シミュレーション</span>
+      </div>
+      <div class="pull-quote">
+        最初は守りの業務改善として始まり、<br>最終的には攻めの事業変革基盤になる。
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- 11 経営層 -->
+    <div class="section" id="s11">
+      <p class="section-label">11</p>
+      <h2>経営層にはどう説明すべきか</h2>
+      <p>経営層へ説明する際に最も重要なのは、<strong>「PLM導入」を主役にしないこと</strong>です。主役は業務改革・事業変革・競争力強化・企業進化であり、PLMはそのための手段です。</p>
+      <p>経営層が本当に恐れているのは、BOM管理できないこと・Excelが多いこと——ではありません。本当に怖いのは<strong>「変化に適応できず、気づいた時には競争力を失っていること」</strong>です。問題は、<strong>「管理不足」ではなく「進化速度不足」</strong>なのです。</p>
+
+      <h3>投資対効果は「工数削減」だけで見てはいけない</h3>
+      <p>PLM提案で非常に多い失敗があります。それは、</p>
+      <div class="warn-box">
+        <p>・ 図面検索時間が○％削減</p>
+        <p>・ BOM作成工数が○％削減</p>
+        <p>……だけでROIを説明してしまうこと。</p>
+      </div>
+      <p>もちろん、それも間違いではありません。しかし、それだけでは経営層には刺さりません。なぜなら経営層は、<strong>「この投資で、将来も勝ち続けられるのか」</strong>を見ているからです。つまりPLMは、「業務効率化投資」ではなく、<strong>「競争力維持・強化投資」</strong>として説明する必要があります。</p>
+
+      <h3>本当に怖いのは「見えているムダ」ではない</h3>
+      <p>多くの企業は、Excelが多い・二重入力が多い・情報探索に時間がかかる——といった<strong>"見えているムダ"</strong>に目が行きます。しかし、本当に大きな損失はそこではありません。本当に怖いのは、<strong>"見えていない経営損失"</strong>です。</p>
+      <ul class="plain-list">
+        <li>設計変更影響が見えず後工程で不具合化</li>
+        <li>過去知見が再利用されず同じ失敗を繰り返す</li>
+        <li>生産準備が後ろ倒しになる</li>
+        <li>品質問題で市場対応が発生する</li>
+        <li>技術継承できず競争力が落ちる</li>
+        <li>AI活用したくてもデータが使えない</li>
+      </ul>
+      <p>これらは、<strong>「静かに利益を削り続ける」</strong>タイプの損失です。</p>
+
+      <h3>ROIは「3階層」で説明すると刺さる</h3>
+
+      <div class="roi-block defense">
+        <p class="roi-block-title">① 守りROI</p>
+        <ul>
+          <li>情報探索時間削減</li>
+          <li>手戻り削減</li>
+          <li>BOM不整合削減</li>
+          <li>設計変更漏れ削減</li>
+          <li>問い合わせ削減</li>
+          <li>品質問題削減</li>
+          <li>属人化低減</li>
+        </ul>
+      </div>
+
+      <div class="roi-block offense">
+        <p class="roi-block-title">② 攻めROI</p>
+        <ul>
+          <li>開発スピード向上</li>
+          <li>市場投入短縮</li>
+          <li>原価最適化</li>
+          <li>流用率向上</li>
+          <li>部品共通化</li>
+          <li>バリエーション最適化</li>
+          <li>見積精度向上</li>
+          <li>顧客対応力向上</li>
+        </ul>
+        <p style="margin-top:14px; padding-top:12px; border-top:1px solid var(--border); font-size:13px; color:var(--text2);">ここで重要なのは、<strong style="color:var(--gold);">「PLMは利益体質改善に効く」</strong>ということです。</p>
+      </div>
+
+      <div class="roi-block exec">
+        <p class="roi-block-title">③ 経営ROI</p>
+        <ul>
+          <li>変化対応力向上</li>
+          <li>技術継承</li>
+          <li>グローバル統制</li>
+          <li>AI活用基盤</li>
+          <li>企業学習速度向上</li>
+          <li>事業継続性向上</li>
+        </ul>
+        <p style="margin-top:14px; padding-top:12px; border-top:1px solid var(--border); font-size:13px; color:var(--text2);">これは単純な金額換算が難しい。しかし、<strong style="color:var(--accent);">"企業の生存力"</strong>に直結します。</p>
+      </div>
+
+      <div class="pull-quote">
+        PLMは「将来も利益を出し続けるための基盤投資」なのです。
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- 12 まとめ -->
+    <div class="section" id="s12">
+      <p class="section-label">12</p>
+      <div class="summary-box">
+        <h2>まとめ</h2>
+        <p>PLM導入が目的ではありません。目的は、<strong>「変化を競争力へ変え、学習し、適応し、進化し続けられる企業を作ること」</strong>です。</p>
+        <p>これからの製造業は「どれだけ作れるか」ではなく、「どれだけ速く学習し、適応し、進化できるか」で競争が決まります。つまり、今後の競争力は<strong>「企業学習速度」</strong>になります。</p>
+        <p class="final-phrase">
+          そしてPLMは、<br>「企業知能基盤」・「企業進化エンジン」<br>へ進化していくのです。
+        </p>
+      </div>
+    </div>
+
+  </article>
+</div>
+
+<footer>© PLM持論ブログ — Manufacturing × PLM</footer>
+
 </body>
 </html>
